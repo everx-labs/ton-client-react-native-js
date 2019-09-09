@@ -4,7 +4,7 @@
 	"description": "TON Client Library for React Native",
 	"main": "index.js",
 	"scripts": {
-		"install": "install.js"
+		"install": "node install.js"
 	},
 	"keywords": [],
 	"author": "",
