@@ -22,7 +22,8 @@ const http = require('http');
 const zlib = require('zlib');
 
 const p = os.platform();
-const v = process.env.npm_package_version.split('.').join('_');
+const binVersion = process.env.npm_package_binVersion || process.env.npm_package_version;
+const bv = binVersion.split('.').join('_');
 const root = process.cwd();
 const binariesHost = 'sdkbinaries.tonlabs.io';
 
@@ -95,10 +96,10 @@ async function dl(dst, src) {
 }
 
 async function main() {
-    await dl('ios/libtonsdk.a', `tonclient_${v}_react_native_ios`);
-    await dl('android/src/main/jniLibs/arm64-v8a/libtonsdk.so', `tonclient_${v}_react_native_aarch64-linux-android`);
-    await dl('android/src/main/jniLibs/armeabi-v7a/libtonsdk.so', `tonclient_${v}_react_native_armv7-linux-androideabi`);
-    await dl('android/src/main/jniLibs/x86/libtonsdk.so', `tonclient_${v}_react_native_i686-linux-android`);
+    await dl('ios/libtonsdk.a', `tonclient_${bv}_react_native_ios`);
+    await dl('android/src/main/jniLibs/arm64-v8a/libtonsdk.so', `tonclient_${bv}_react_native_aarch64-linux-android`);
+    await dl('android/src/main/jniLibs/armeabi-v7a/libtonsdk.so', `tonclient_${bv}_react_native_armv7-linux-androideabi`);
+    await dl('android/src/main/jniLibs/x86/libtonsdk.so', `tonclient_${bv}_react_native_i686-linux-android`);
 }
 
 (async () => {

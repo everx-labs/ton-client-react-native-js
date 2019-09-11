@@ -1,6 +1,6 @@
 
 #import "TONSDKForReactNative.h"
-#import "../sdk/tonsdk.h"
+#import "ton_client.h"
 
 @interface Request: NSObject
 @property RCTResponseSenderBlock onResult;
