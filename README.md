@@ -1,6 +1,8 @@
 # ton-client-react-native-js
 
-TON Client Library for React Native
+TON Labs Client Library for React Native
+
+See https://docs.ton.dev for documentation
 
 ---
 Copyright 2018-2019 TON DEV SOLUTIONS LTD.
