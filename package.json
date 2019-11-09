@@ -1,7 +1,6 @@
 {
 	"name": "ton-client-react-native-js",
-	"version": "0.14.0",
-	"binVersion": "0.14.0",
+	"version": "0.16.0",
 	"description": "TON Client Library for React Native",
 	"main": "index.js",
 	"scripts": {
@@ -49,6 +48,6 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.14.0"
+		"ton-client-js": "git+ssh://git@github.com/tonlabs/ton-client-js.git#0.16.0-rc"
 	}
 }
