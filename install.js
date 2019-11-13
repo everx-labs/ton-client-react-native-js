@@ -16,14 +16,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
-const https = require('https');
 const http = require('http');
 const zlib = require('zlib');
 
-const p = os.platform();
-const binVersion = process.env.npm_package_binVersion || process.env.npm_package_version;
-const bv = binVersion.split('.').join('_');
+const {bv} = require('./binaries');
 const root = process.cwd();
 const binariesHost = 'sdkbinaries.tonlabs.io';
 
