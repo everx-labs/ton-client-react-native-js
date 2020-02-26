@@ -15,16 +15,17 @@
  */
 
 import {NativeModules} from 'react-native';
-const {TONClient} = require('ton-client-js');
+import {TONClient} from 'ton-client-js';
+
 TONClient.setLibrary({
     fetch,
     WebSocket,
     createLibrary: () => {
         return Promise.resolve(NativeModules.TONSDKForReactNative);
-    }
+    },
 });
 
-module.exports = {
+export {
     TONClient
 };
 
