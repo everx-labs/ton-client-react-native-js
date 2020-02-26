@@ -25,8 +25,6 @@ TONClient.setLibrary({
     },
 });
 
-export {
+export default {
     TONClient
 };
-
-
