@@ -13,7 +13,7 @@
 
 - (dispatch_queue_t)methodQueue
 {
-    return dispatch_get_main_queue();
+   return dispatch_queue_create("js.react-native.client.ton", DISPATCH_QUEUE_CONCURRENT);
 }
 RCT_EXPORT_MODULE()
 
