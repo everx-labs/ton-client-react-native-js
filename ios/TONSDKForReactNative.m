@@ -11,6 +11,10 @@
 
 @implementation TONSDKForReactNative
 
+- (dispatch_queue_t)methodQueue
+{
+   return dispatch_queue_create("js.react-native.client.ton", DISPATCH_QUEUE_CONCURRENT);
+}
 RCT_EXPORT_MODULE()
 
 static int nextRequestId = 1;
