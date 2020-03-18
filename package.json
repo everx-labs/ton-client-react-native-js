@@ -1,6 +1,6 @@
 {
 	"name": "ton-client-react-native-js",
-	"version": "0.21.0",
+	"version": "0.21.1",
 	"description": "TON Client Library for React Native",
 	"main": "index.js",
 	"scripts": {
