@@ -49,6 +49,6 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.22.0"
+		"ton-client-js": "^0.23.0"
 	}
 }
