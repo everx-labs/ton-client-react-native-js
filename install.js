@@ -21,7 +21,7 @@ const zlib = require('zlib');
 
 const {bv} = require('./binaries');
 const root = process.cwd();
-const binariesHost = 'sdkbinaries.tonlabs.io';
+const binariesHost = 'sdkbinaries-ws.tonlabs.io';
 
 
 function downloadAndGunzip(dest, url) {
