@@ -9,4 +9,4 @@ All notable changes to this project will be documented in this file.
 
 
 ## 0.23.2 - May 15, 2020
-- Bug fix
+-  Update binary URL
