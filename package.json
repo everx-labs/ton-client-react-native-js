@@ -1,13 +1,19 @@
 {
 	"name": "ton-client-react-native-js",
-	"version": "0.23.2",
-	"binaries_version": "0.23.1",
+	"version": "0.24.0",
 	"description": "TON Client Library for React Native",
 	"main": "index.js",
 	"scripts": {
 		"install": "node install.js"
 	},
-	"keywords": ["TON", "JavaScript", "API", "Client", "React", "Native"],
+	"keywords": [
+		"TON",
+		"JavaScript",
+		"API",
+		"Client",
+		"React",
+		"Native"
+	],
 	"author": "TON DEV SOLUTIONS LTD.",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -49,6 +55,6 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.23.0"
+		"ton-client-js": "^0.24.0"
 	}
 }
