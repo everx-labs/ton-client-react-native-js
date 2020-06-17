@@ -30,7 +30,7 @@ function downloadAndGunzip(dest, url) {
         const request = http.get(url, response => {
             if (response.statusCode !== 200) {
                 reject({
-                    message: `Download failed with ${response.statusCode}: ${response.statusMessage}`,
+                    message: `Download from ${url} failed with ${response.statusCode}: ${response.statusMessage}`,
                 });
                 return;
             }
@@ -86,7 +86,7 @@ function downloadAndGunzip(dest, url) {
 async function dl(dst, src) {
     const dst_path = `${root}/${dst}`;
     const src_url = `http://${binariesHost}/${src}.gz`;
-    process.stdout.write(`Downloading ${dst} from ${src_url} ...`);
+    process.stdout.write(`Downloading from ${src_url} to ${dst_path} ...`);
     await downloadAndGunzip(dst_path, src_url);
     process.stdout.write('\n');
 }
