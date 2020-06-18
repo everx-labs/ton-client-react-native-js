@@ -17,6 +17,9 @@
 import {NativeModules} from 'react-native';
 import {TONClient} from 'ton-client-js';
 
+const fetch = fetch || global.fetch;
+const WebSocket =  WebSocket || global.WebSocket;
+
 TONClient.setLibrary({
     fetch,
     WebSocket,
