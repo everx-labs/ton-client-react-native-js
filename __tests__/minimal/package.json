@@ -1,20 +1,11 @@
 {
-	"name": "ton-client-react-native-js",
-	"version": "0.24.0",
-	"description": "TON Client Library for React Native",
+	"name": "minimal-tests",
+	"version": "1.0.0",
+	"description": "TON Client Library for React Native Minimal Test Suite",
 	"main": "index.js",
 	"scripts": {
-		"npm install": "npm install",
-		"install": "node install.js"
+		"npm install": "npm install"
 	},
-	"keywords": [
-		"TON",
-		"JavaScript",
-		"API",
-		"Client",
-		"React",
-		"Native"
-	],
 	"author": "TON DEV SOLUTIONS LTD.",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -22,6 +13,12 @@
 		"url": "https://github.com/tonlabs/ton-client-react-native-js.git"
 	},
 	"homepage": "https://ton.dev/node-se",
+	"dependencies": {
+		"ton-client-js": "^0.24.0",
+		"ton-client-react-native-js": "../../",
+		"react": "16.9.0",
+		"react-native": "0.61.5"
+	},
 	"devDependencies": {
 		"@babel/runtime": "^7.4.4",
 		"@babel/core": "^7.4.4",
@@ -54,8 +51,5 @@
 		"flow": "^0.2.3",
 		"jest": "^24.8.0"
 	},
-	"peerDependencies": {},
-	"dependencies": {
-		"ton-client-js": "^0.24.0"
-	}
+	"peerDependencies": {}
 }

@@ -37,4 +37,32 @@ public class TONSDKForReactNativeModule extends ReactContextBaseJavaModule {
         }.init(onResult);
         TONSDKJsonApi.request(method, paramsJson, resultHandler);
     }
+
+    @ReactMethod
+    public int coreCreateContext() {
+        return TONSDKJsonApi.tc_create_context();
+    }
+
+    @ReactMethod
+    public void coreDestroyContext(int context) {
+        return TONSDKJsonApi.tc_destroy_context(context);
+    }
+
+    @ReactMethod
+    public void coreRequest(int context, String method, String paramsJson, Callback onResult) {
+        TONSDKJsonApi.IResultHandler resultHandler = new TONSDKJsonApi.IResultHandler() {
+            private Callback callback;
+
+            TONSDKJsonApi.IResultHandler init(Callback callback) {
+                this.callback = callback;
+                return this;
+            }
+
+            @Override
+            public void invoke(String resultJson, String errorJson, int flags) {
+                this.callback.invoke(resultJson, errorJson);
+            }
+        }.init(onResult);
+        TONSDKJsonApi.tc_json_request_async(context, method, paramsJson, resultHandler);
+    }
 }
