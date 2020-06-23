@@ -19,7 +19,7 @@ const path = require('path');
 const http = require('http');
 const zlib = require('zlib');
 
-const {bv} = require('./binaries');
+const { bv } = require('./binaries');
 const root = process.cwd();
 const binariesHost = 'sdkbinaries-ws.tonlabs.io';
 
@@ -82,32 +82,40 @@ function downloadAndGunzip(dest, url) {
 
 }
 
+// dev_dl - used when this package installed during CI phase or development process.
+// Binaries will be copied from location specified by TC_BIN_SRC environment variable.
+function dev_dl(dst, binSrc) {
+    const androidPfx = 'android/src/main/jniLibs/';
+    const srcPath = path.resolve(
+        binSrc,
+        dst.startsWith(androidPfx) ? `android/${dst.substr(androidPfx.length)}` : dst,
+    );
+    if (!fs.existsSync(srcPath)) {
+        process.stdout.write(`Skipping ${dst} from ${srcPath} ...\n`);
+        return;
+    }
+    process.stdout.write(`Copying ${dst} from ${srcPath} ...\n`);
+    const dstPath = path.resolve(root, dst);
+    const dstDir = path.dirname(path.resolve(dstPath));
+    if (!fs.existsSync(dstDir)) {
+        fs.mkdirSync(dstDir, { recursive: true });
+    }
+    fs.copyFileSync(srcPath, dstPath);
+}
+
 
 async function dl(dst, src) {
-    const dst_path = path.resolve(root, dst);
     if ((process.env.TC_BIN_SRC || '') !== '') {
-        const androidPfx = 'android/src/main/jniLibs/';
-        const src_path = path.resolve(
-            process.env.TC_BIN_SRC,
-            dst.startsWith(androidPfx) ? `android/${dst.substr(androidPfx.length)}` : dst,
-        );
-        if (fs.existsSync(src_path)) {
-            process.stdout.write(`Copying ${dst} from ${src_path} ...`);
-            const dst_dir = path.dirname(path.resolve(dst_path));
-            if (!fs.existsSync(dst_dir)) {
-                fs.mkdirSync(dst_dir, { recursive: true });
-            }
-            fs.copyFileSync(src_path, dst_path);
-        } else {
-            process.stdout.write(`Skipping ${dst} from ${src_path} ...`);
-        }
-    } else {
-        const src_url = `http://${binariesHost}/${src}.gz`;
-        process.stdout.write(`Downloading ${dst} from ${src_url} ...`);
-        await downloadAndGunzip(dst_path, src_url);
+        dev_dl(dst, process.env.TC_BIN_SRC);
+        return;
     }
+    const dst_path = path.resolve(root, dst);
+    const src_url = `http://${binariesHost}/${src}.gz`;
+    process.stdout.write(`Downloading ${dst} from ${src_url} ...`);
+    await downloadAndGunzip(dst_path, src_url);
     process.stdout.write('\n');
 }
+
 
 async function main() {
     await dl('ios/libtonsdk.a', `tonclient_${bv}_react_native_ios`);
@@ -115,6 +123,7 @@ async function main() {
     await dl('android/src/main/jniLibs/armeabi-v7a/libtonsdk.so', `tonclient_${bv}_react_native_armv7-linux-androideabi`);
     await dl('android/src/main/jniLibs/x86/libtonsdk.so', `tonclient_${bv}_react_native_i686-linux-android`);
 }
+
 
 (async () => {
     try {

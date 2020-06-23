@@ -12,6 +12,7 @@ import {
     Text,
 } from 'react-native';
 import {TONClient} from 'ton-client-js';
+import initTests from 'ton-client-js/__tests__/_/init-tests';
 
 class App extends Component {
     async componentDidMount() {
