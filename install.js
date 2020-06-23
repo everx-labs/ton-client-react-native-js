@@ -84,10 +84,28 @@ function downloadAndGunzip(dest, url) {
 
 
 async function dl(dst, src) {
-    const dst_path = `${root}/${dst}`;
-    const src_url = `http://${binariesHost}/${src}.gz`;
-    process.stdout.write(`Downloading ${dst} from ${src_url} ...`);
-    await downloadAndGunzip(dst_path, src_url);
+    const dst_path = path.resolve(root, dst);
+    if ((process.env.TC_BIN_SRC || '') !== '') {
+        const androidPfx = 'android/src/main/jniLibs/';
+        const src_path = path.resolve(
+            process.env.TC_BIN_SRC,
+            dst.startsWith(androidPfx) ? `android/${dst.substr(androidPfx.length)}` : dst,
+        );
+        if (fs.existsSync(src_path)) {
+            process.stdout.write(`Copying ${dst} from ${src_path} ...`);
+            const dst_dir = path.dirname(path.resolve(dst_path));
+            if (!fs.existsSync(dst_dir)) {
+                fs.mkdirSync(dst_dir, { recursive: true });
+            }
+            fs.copyFileSync(src_path, dst_path);
+        } else {
+            process.stdout.write(`Skipping ${dst} from ${src_path} ...`);
+        }
+    } else {
+        const src_url = `http://${binariesHost}/${src}.gz`;
+        process.stdout.write(`Downloading ${dst} from ${src_url} ...`);
+        await downloadAndGunzip(dst_path, src_url);
+    }
     process.stdout.write('\n');
 }
 

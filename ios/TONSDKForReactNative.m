@@ -25,22 +25,15 @@ static dispatch_once_t activeRequestsToken = 0;
 static NSMutableDictionary<NSNumber*, Request*>* activeRequests = NULL;
 
 static int ensureCoreContext(int context) {
-    dispatch_once(&coreContexts, ^{
+    dispatch_once(&coreContextsToken, ^{
         coreContexts = [NSMutableDictionary new];
     });
-    NSNumber* coreContext = activeRequests[@(context)];
+    NSNumber* coreContext = coreContexts[@(context)];
     if (!coreContext) {
         coreContext = @(tc_create_context());
         coreContexts[@(context)] = coreContext;
     }
     return coreContext.intValue;
-};
-
-static Request* requestById(int requestId) {
-    dispatch_once(&activeRequestsToken, ^{
-        activeRequests = [NSMutableDictionary new];
-    });
-    return activeRequests[@(requestId)];
 };
 
 static int createRequest(RCTResponseSenderBlock onResult) {
@@ -54,18 +47,18 @@ static int createRequest(RCTResponseSenderBlock onResult) {
     return requestId;
 };
 
-static void releaseRequest(int requestId) {
-    dispatch_once(&activeRequestsToken, ^{
-        activeRequests = [NSMutableDictionary new];
-    });
-    [activeRequests removeObjectForKey:@(requestId)];
-};
-
 static Request* requestById(int requestId) {
     dispatch_once(&activeRequestsToken, ^{
         activeRequests = [NSMutableDictionary new];
     });
     return activeRequests[@(requestId)];
+};
+
+static void releaseRequest(int requestId) {
+    dispatch_once(&activeRequestsToken, ^{
+        activeRequests = [NSMutableDictionary new];
+    });
+    [activeRequests removeObjectForKey:@(requestId)];
 };
 
 static NSString* stringFromTon(InteropString tonString) {
@@ -103,7 +96,7 @@ RCT_EXPORT_METHOD(coreDestroyContext: (int)context) {
     dispatch_once(&coreContextsToken, ^{
         coreContexts = [NSMutableDictionary new];
     });
-    NSNumber* coreContext = activeRequests[@(context)];
+    NSNumber* coreContext = coreContexts[@(context)];
     if (coreContext) {
         [coreContexts removeObjectForKey:@(context)];
         tc_destroy_context(coreContext.intValue);
@@ -116,7 +109,7 @@ RCT_EXPORT_METHOD(request:(nonnull NSString *)method
     int requestId = createRequest(onResult);
     InteropString tonMethod = {(char*)method.UTF8String, method.length};
     InteropString tonParamsJson = {(char*)paramsJson.UTF8String, paramsJson.length};
-    tc_json_request_async(ensureCoreContext(1), tonMethod, tonParamsJson, requestId, handleRequest));
+    tc_json_request_async(ensureCoreContext(1), tonMethod, tonParamsJson, requestId, handleRequest);
 }
 
 @end

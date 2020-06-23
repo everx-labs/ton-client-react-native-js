@@ -1,6 +1,6 @@
 {
 	"name": "ton-client-react-native-js",
-	"version": "0.24.0",
+	"version": "0.24.1",
 	"description": "TON Client Library for React Native",
 	"main": "index.js",
 	"scripts": {
@@ -56,6 +56,6 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.24.0"
+		"ton-client-js": "^0"
 	}
 }
