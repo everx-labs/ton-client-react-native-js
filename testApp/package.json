@@ -9,13 +9,17 @@
 		"test": "jest",
 		"lint": "eslint .",
 		"npm install": "npm install",
-		"dev install": "node dev-install.js"
+		"prepare tests": "node prepare-tests.js"
 	},
 	"dependencies": {
+		"buffer": "^5.6.0",
+		"error-polyfill": "^0.1.2",
+		"jest-lite": "^1.0.0-alpha.4",
+		"opentracing": "^0.14.4",
 		"react": "16.11.0",
 		"react-native": "0.62.2",
-		"ton-client-js": "file:ton-client-js-0.24.0.tgz",
-		"ton-client-react-native-js": "file:ton-client-react-native-js-0.24.1.tgz"
+		"ton-client-js": "^0",
+		"ton-client-react-native-js": "../"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.6.2",
