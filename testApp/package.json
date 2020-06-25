@@ -9,17 +9,17 @@
 		"test": "jest",
 		"lint": "eslint .",
 		"npm install": "npm install",
-		"prepare tests": "node prepare-tests.js"
+		"prepare tests": "node prepare-suite.js"
 	},
 	"dependencies": {
 		"buffer": "^5.6.0",
 		"error-polyfill": "^0.1.2",
+		"react-native-console-time-polyfill": "^1.2.1",
+		"big-integer": "^1.6.48",
 		"jest-lite": "^1.0.0-alpha.4",
-		"jest-circus": "22.1.4",
 		"opentracing": "^0.14.4",
 		"react": "16.11.0",
 		"react-native": "0.62.2",
-		"react-native-console-time-polyfill": "^1.2.1",
 		"ton-client-js": "^0",
 		"ton-client-react-native-js": "../"
 	},

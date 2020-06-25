@@ -1,7 +1,7 @@
 export default {
     env: {
         USE_NODE_SE: 'true',
-        TON_NETWORK_ADDRESS: 'http://0.0.0.0:8080',
+        TON_NETWORK_ADDRESS: 'http://192.168.1.137:8080',
     },
     contracts: {
         'CheckInitParams-1': {

@@ -1,4 +1,5 @@
-const {spawn} = require('child_process');
+const os = require('os');
+const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -46,6 +47,16 @@ function run(name, ...args) {
     });
 }
 
+function replaceLocalhost(address) {
+    const ipv4 = Object.values(os.networkInterfaces())
+        .reduce((acc, x) => acc.concat(x), [])
+        .find(x => x.family === 'IPv4' && !x.internal);
+    const ip = ipv4 && ipv4.address;
+    return address
+        .replace(/(.*\D)?0\.0\.0\.0(\D.*)?/g, `$1${ip}$2`)
+        .replace(/(.*\D)?localhost(\D.*)?/g, `$1${ip}$2`)
+}
+
 function extIs(file, ext) {
     return path.extname(file).toLowerCase() === ext;
 }
@@ -59,7 +70,7 @@ function copyTestSuiteFile(source, targetDir, convert) {
     const content = convert(source, fs.readFileSync(source));
     if (content !== null && content !== undefined) {
         if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir, {recursive: true});
+            fs.mkdirSync(targetDir, { recursive: true });
         }
         fs.writeFileSync(target, content);
     }
@@ -78,9 +89,9 @@ function copyTestSuiteFolder(sourceDir, targetDir, convert) {
 
 function replaceSection(filePath, section, content) {
     const sectionMatch = new RegExp(`(\/\/${section})[^]*(\/\/${section})`, 'g');
-    const script = fs.readFileSync(filePath, {encoding: 'utf8'}).toString()
+    const script = fs.readFileSync(filePath, { encoding: 'utf8' }).toString()
         .replace(sectionMatch, `$1\n${content}\n$2`);
-    fs.writeFileSync(filePath, script, {encoding: 'utf8'});
+    fs.writeFileSync(filePath, script, { encoding: 'utf8' });
 
 }
 
@@ -96,7 +107,7 @@ function rewriteRunScript() {
         `export default {`,
         `    env: {`,
         `        USE_NODE_SE: '${process.env.USE_NODE_SE || 'true'}',`,
-        `        TON_NETWORK_ADDRESS: '${process.env.TON_NETWORK_ADDRESS || 'http://0.0.0.0:8080'}',`,
+        `        TON_NETWORK_ADDRESS: '${replaceLocalhost(process.env.TON_NETWORK_ADDRESS || 'http://0.0.0.0:8080')}',`,
         `    },`,
         `    contracts: {`,
     ];
@@ -125,7 +136,7 @@ function rewriteRunScript() {
         '};',
     );
     replaceSection(path.resolve(dstTestsPath, '_', 'run.js'), 'IMPORTS', imports.join('\n'));
-    fs.writeFileSync(path.resolve(dstTestsPath, '_', 'assets.js'), assets.join('\n'), {encoding: 'utf8'});
+    fs.writeFileSync(path.resolve(dstTestsPath, '_', 'assets.js'), assets.join('\n'), { encoding: 'utf8' });
 }
 
 function copyTestSuite() {
@@ -159,7 +170,7 @@ function copyTestSuite() {
     await run('npm', 'pack', '../');
     for (const tgz of getTgzNames()) {
         console.log('Install ', tgz);
-        await run('npm', 'install', tgz, '--no-save');
+        await run('npm', 'install', tgz, '--no-save', '--force');
         console.log('Remove ', tgz);
         fs.unlinkSync(path.resolve(__dirname, tgz));
     }

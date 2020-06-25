@@ -86,7 +86,9 @@ static void handleRequest(int32_t requestId, InteropString tonResultJson, Intero
 
 
 RCT_EXPORT_METHOD(coreCreateContext: (RCTResponseSenderBlock)onResult) {
-    onResult(@[@(tc_create_context())]);
+    if (onResult) {
+        onResult(@[@(tc_create_context())]);
+    }
 }
 
 RCT_EXPORT_METHOD(coreRequest: (int)context
@@ -99,8 +101,11 @@ RCT_EXPORT_METHOD(coreRequest: (int)context
     tc_json_request_async(context, tonMethod, tonParamsJson, requestId, handleRequest);
 }
 
-RCT_EXPORT_METHOD(coreDestroyContext: (int)context) {
+RCT_EXPORT_METHOD(coreDestroyContext: (int)context onComplete:(RCTResponseSenderBlock)onComplete) {
     tc_destroy_context(context);
+    if (onComplete) {
+        onComplete(@[]);
+    }
 }
 
 RCT_EXPORT_METHOD(request:(nonnull NSString *)method

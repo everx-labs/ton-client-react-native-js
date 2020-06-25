@@ -25,14 +25,17 @@ export async function startTests(onStateChange) {
         onStateChange(state);
 
         j.addEventHandler((event) => {
-            if (event.name === 'test_success') {
+            if (event.name === 'test_start') {
+                console.log(`[TEST_START] ${JSON.stringify({
+                    name: event.test.name,
+                })}`);
+            } else if (event.name === 'test_success') {
                 state.passed += 1;
                 console.log(`[TEST_SUCCESS] ${JSON.stringify({
                     name: event.test.name,
                 })}`);
             } else if (event.name === 'test_failure') {
                 state.failed += 1;
-                console.log('>>>', event);
                 console.log(`[TEST_FAILURE] ${JSON.stringify({
                     name: event.test.name,
                     error: event.error.toString(),
@@ -53,6 +56,8 @@ export async function startTests(onStateChange) {
             console.log(`[TEST_COMPLETE] ${JSON.stringify(results)}`);
             state.finished = true;
             onStateChange(state);
+        }).catch((error) => {
+            console.log('>>>', error);
         });
     } catch (error) {
         console.log('>>>', error);

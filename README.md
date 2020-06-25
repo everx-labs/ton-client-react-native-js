@@ -45,8 +45,8 @@ Run tests:
 ```shell script
 cd testApp
 npm install
-node prepare-tests.js
-node test-ios.js
-node test-android.js
+node prepare-suite.js
+node run-suite.js ios
+node run-suite.js android
 ```
 
