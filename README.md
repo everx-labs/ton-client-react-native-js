@@ -2,7 +2,7 @@
 
 TON Labs Client Library for React Native
 
-See https://docs.ton.dev for documentation
+See [https://docs.ton.dev/86757ecb2/p/92b041-overview](https://docs.ton.dev/86757ecb2/p/92b041-overview) for documentation
 
 ![npm publish](https://github.com/tonlabs/ton-client-react-native-js/workflows/npm%20publish/badge.svg)
 
