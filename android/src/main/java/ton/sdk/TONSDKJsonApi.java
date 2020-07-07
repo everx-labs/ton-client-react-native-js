@@ -2,7 +2,7 @@ package ton.sdk;
 
 public class TONSDKJsonApi {
     static {
-        System.loadLibrary("tonsdk");
+        System.loadLibrary("tonclient");
     }
 
     public interface IResultHandler {

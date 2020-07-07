@@ -118,10 +118,10 @@ async function dl(dst, src) {
 
 
 async function main() {
-    await dl('ios/libtonsdk.a', `tonclient_${bv}_react_native_ios`);
-    await dl('android/src/main/jniLibs/arm64-v8a/libtonsdk.so', `tonclient_${bv}_react_native_aarch64-linux-android`);
-    await dl('android/src/main/jniLibs/armeabi-v7a/libtonsdk.so', `tonclient_${bv}_react_native_armv7-linux-androideabi`);
-    await dl('android/src/main/jniLibs/x86/libtonsdk.so', `tonclient_${bv}_react_native_i686-linux-android`);
+    await dl('ios/libtonclient.a', `tonclient_${bv}_react_native_ios`);
+    await dl('android/src/main/jniLibs/arm64-v8a/libtonclient.so', `tonclient_${bv}_react_native_aarch64-linux-android`);
+    await dl('android/src/main/jniLibs/armeabi-v7a/libtonclient.so', `tonclient_${bv}_react_native_armv7-linux-androideabi`);
+    await dl('android/src/main/jniLibs/x86/libtonclient.so', `tonclient_${bv}_react_native_i686-linux-android`);
 }
 
 
