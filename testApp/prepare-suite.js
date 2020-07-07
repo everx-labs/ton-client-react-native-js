@@ -164,8 +164,9 @@ function copyTestSuite() {
         console.log('Remove ', tgz);
         fs.unlinkSync(path.resolve(__dirname, tgz));
     }
-    if (fs.existsSync(path.resolve(__dirname, '..', '..', 'ton-client-js'))) {
-        await run('npm', 'pack', '../../ton-client-js');
+    const tonClientJsPath = path.resolve(__dirname, '..', '..', 'ton-client-js');
+    if (fs.existsSync(tonClientJsPath)) {
+        await run('npm', 'pack', path.resolve(__dirname, '..', '..', 'ton-client-js'));
     }
     await run('npm', 'pack', '../');
     for (const tgz of getTgzNames()) {

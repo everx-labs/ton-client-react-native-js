@@ -62,7 +62,7 @@ function onOutputLine(line) {
     const failureLog = extractReport('[TEST_FAILURE]', line);
     if (failureLog) {
         failure += 1;
-        console.log(`\\033[0;31m𐄂 ${failureLog.name} (${success} / ${failure}) - ${failureLog.error.toString()}\\033[m`);
+        console.log(`\x1b[0;31m𐄂 ${failureLog.name} (${success} / ${failure}) - ${JSON.stringify(failureLog.errors, undefined, '    ')}\x1b[m`);
         return;
     }
     const completeLog = extractReport('[TEST_COMPLETE]', line);
@@ -100,7 +100,7 @@ async function main() {
         console.log('Run target missing. Use: node run-suite ios | android.');
         process.exit(1);
     }
-    run('npx', ['react-native', 'start'], onTestLog).then(() => {
+    run('npx', ['react-native', 'start', '--reset-cache'], onTestLog).then(() => {
     }).catch((error) => {
         console.log(error);
     });
