@@ -1,4 +1,3 @@
-
 package ton.sdk;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,5 +35,39 @@ public class TONSDKForReactNativeModule extends ReactContextBaseJavaModule {
             }
         }.init(onResult);
         TONSDKJsonApi.request(method, paramsJson, resultHandler);
+    }
+
+    @ReactMethod
+    public void coreCreateContext(Callback onResult) {
+        int context = TONSDKJsonApi.createContext();
+        if (onResult != null) {
+            onResult.invoke(context);
+        }
+    }
+
+    @ReactMethod
+    public void coreDestroyContext(int context, Callback onComplete) {
+        TONSDKJsonApi.destroyContext(context);
+        if (onComplete != null) {
+            onComplete.invoke();
+        }
+    }
+
+    @ReactMethod
+    public void coreRequest(int context, String method, String paramsJson, Callback onResult) {
+        TONSDKJsonApi.IResultHandler resultHandler = new TONSDKJsonApi.IResultHandler() {
+            private Callback callback;
+
+            TONSDKJsonApi.IResultHandler init(Callback callback) {
+                this.callback = callback;
+                return this;
+            }
+
+            @Override
+            public void invoke(String resultJson, String errorJson, int flags) {
+                this.callback.invoke(resultJson, errorJson);
+            }
+        }.init(onResult);
+        TONSDKJsonApi.jsonRequestAsync(context, method, paramsJson, resultHandler);
     }
 }

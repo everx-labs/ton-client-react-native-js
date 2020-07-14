@@ -4,6 +4,7 @@
 	"description": "TON Client Library for React Native",
 	"main": "index.js",
 	"scripts": {
+		"npm install": "npm install",
 		"install": "node install.js"
 	},
 	"keywords": [
@@ -55,6 +56,6 @@
 	},
 	"peerDependencies": {},
 	"dependencies": {
-		"ton-client-js": "^0.25.0"
+		"ton-client-js": "^0"
 	}
 }
