@@ -11,6 +11,10 @@ const runEnv = {
     TC_BIN_SRC: path.resolve(coreSourcePath, 'platforms', 'ton-client-react-native', 'build'),
 };
 
+if (!runEnv.TC_BIN_SRC && fs.existsSync(coreSourcePath)) {
+    runEnv.TC_BIN_SRC = path.resolve(coreSourcePath, 'platforms', 'ton-client-react-native', 'build');
+}
+
 function run(name, ...args) {
     return new Promise((resolve, reject) => {
         try {
