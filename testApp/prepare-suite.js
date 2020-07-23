@@ -6,14 +6,11 @@ const path = require('path');
 const srcTestsPath = path.resolve(__dirname, 'node_modules', 'ton-client-js', '__tests__');
 const dstTestsPath = path.resolve(__dirname, 'suite');
 const coreSourcePath = path.resolve(__dirname, '..', '..', 'TON-SDK', 'ton_client');
-const runEnv = {
-    ...process.env,
-    TC_BIN_SRC: path.resolve(coreSourcePath, 'platforms', 'ton-client-react-native', 'build'),
-};
-
+const runEnv = { ...process.env };
 if (!runEnv.TC_BIN_SRC && fs.existsSync(coreSourcePath)) {
     runEnv.TC_BIN_SRC = path.resolve(coreSourcePath, 'platforms', 'ton-client-react-native', 'build');
 }
+
 
 function run(name, ...args) {
     return new Promise((resolve, reject) => {
@@ -107,12 +104,17 @@ function rewriteRunScript() {
         }
     });
 
+    const giverKeysPath = path.resolve(os.homedir(), 'giverKeys.json');
+    const giverKeys = fs.existsSync(giverKeysPath)
+        ? JSON.parse(fs.readFileSync(giverKeysPath, { encoding: 'utf8' }))
+        : null;
     const assets = [
         `export default {`,
         `    env: {`,
         `        USE_NODE_SE: '${process.env.USE_NODE_SE || 'true'}',`,
         `        TON_NETWORK_ADDRESS: '${replaceLocalhost(process.env.TON_NETWORK_ADDRESS || 'http://0.0.0.0:8080')}',`,
         `    },`,
+        `    giverKeys: ${JSON.stringify(giverKeys)},`,
         `    contracts: {`,
     ];
     const collectContracts = (abiVersion) => {
@@ -162,25 +164,32 @@ function copyTestSuite() {
     rewriteRunScript();
 }
 
+function removeTgzFiles() {
+    for (const tgz of getTgzNames()) {
+        console.log('Remove', tgz);
+        fs.unlinkSync(path.resolve(__dirname, tgz));
+    }
+}
 
 (async () => {
-    for (const tgz of getTgzNames()) {
-        console.log('Remove ', tgz);
-        fs.unlinkSync(path.resolve(__dirname, tgz));
-    }
-    const tonClientJsPath = path.resolve(__dirname, '..', '..', 'ton-client-js');
-    if (fs.existsSync(tonClientJsPath)) {
-        await run('npm', 'pack', path.resolve(__dirname, '..', '..', 'ton-client-js'));
-    }
-    await run('npm', 'pack', '../');
-    for (const tgz of getTgzNames()) {
-        console.log('Install ', tgz);
-        await run('npm', 'install', tgz, '--no-save', '--force');
-        console.log('Remove ', tgz);
-        fs.unlinkSync(path.resolve(__dirname, tgz));
-    }
+    console.log('Save', 'package.json');
+    const packageJson = fs.readFileSync(path.resolve(__dirname, 'package.json'));
+    try {
+        removeTgzFiles();
 
-    copyTestSuite();
+        if (fs.existsSync(path.resolve(__dirname, '..', '..', 'ton-client-js'))) {
+            await run('npm', 'pack', path.resolve(__dirname, '..', '..', 'ton-client-js'));
+        }
+        await run('npm', 'pack', '../');
+
+        const tgzNames = getTgzNames();
+        console.log('Install', tgzNames.join(' '));
+        await run('npm', 'install', '--force', ...tgzNames);
+
+        removeTgzFiles();
+        copyTestSuite();
+    } finally {
+        console.log('Restore', 'package.json');
+        fs.writeFileSync(path.resolve(__dirname, 'package.json'), packageJson);
+    }
 })();
-
-

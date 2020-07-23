@@ -60,6 +60,7 @@ buck-out/
 /yarn.lock
 /ios/Podfile.lock
 /android/gradle/wrapper/
+/suite/_/assets.js
 /suite/_/giver.js
 /suite/_/init-tests.js
 /suite/aggregations.js

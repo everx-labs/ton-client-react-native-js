@@ -1,4 +1,3 @@
-import * as j from 'jest-lite';
 import {tests} from './init-tests';
 
 //IMPORTS
@@ -13,9 +12,25 @@ import run_local_suite from '../run-local.js';
 import test_error_messages_suite from '../test-error-messages.js';
 //IMPORTS
 
+function errorToJson(error) {
+    const json = {};
+    Object.entries(error).forEach(([key, value]) => {
+        json[key] = value;
+    });
+    if (error.message && !json.message) {
+        json.message = error.message;
+    }
+    if (Object.keys(json).length === 0) {
+        json.message = error.toString();
+    }
+    return json;
+}
+
 export async function startTests(onStateChange) {
     try {
         await tests.init();
+        jest.setTimeout(300000);
+
         const state = {
             version: await tests.client.config.getVersion(),
             passed: 0,
@@ -24,7 +39,7 @@ export async function startTests(onStateChange) {
         };
         onStateChange(state);
 
-        j.addEventHandler((event) => {
+        jest.addEventHandler((event) => {
             if (event.name === 'test_start') {
                 console.log(`[TEST_START] ${JSON.stringify({
                     name: event.test.name,
@@ -38,8 +53,8 @@ export async function startTests(onStateChange) {
                 state.failed += 1;
                 console.log(`[TEST_FAILURE] ${JSON.stringify({
                     name: event.test.name,
-                    error: event.error.toString(),
-                    errors: event.test.errors,
+                    error: errorToJson(event.error),
+                    errors: event.test.errors && event.test.errors.map(errorToJson),
                 })}`);
             } else {
                 return;
@@ -47,7 +62,7 @@ export async function startTests(onStateChange) {
             onStateChange(state);
         });
         onStateChange(state);
-        j.run().then((results) => {
+        jest.run().then((results) => {
             results.forEach((result) => {
                 result.errors = result.errors.map((e) => {
                     return e.toString().replace(/\n\s+at\s+.*/gi, '')
