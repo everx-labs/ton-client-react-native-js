@@ -19,3 +19,34 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific TON DEV software governing permissions and
 limitations under the License.
+
+# Install
+
+```shell script
+npm install react-native-client-js
+```
+
+# Test
+
+This project contains the `testApp` that runs the main test suite from `ton-client-js`.
+
+Test environment for iOS:
+
+- Xcode (latest version)
+- NodeJs (at least 12)
+
+Test environment for Android:
+
+- Android Studio with emulator
+- NodeJs (at least 12)
+
+Run tests:
+
+```shell script
+cd testApp
+npm install
+node prepare-suite.js
+node run-suite.js ios
+node run-suite.js android
+```
+
