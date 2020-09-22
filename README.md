@@ -1,5 +1,5 @@
 # TON Javascript React-Native SDK
-![npm publish](https://github.com/tonlabs/ton-client-react-native-js/workflows/npm%20publish/badge.svg)
+[![npm publish](https://github.com/tonlabs/ton-client-react-native-js/workflows/npm%20publish/badge.svg)](https://www.npmjs.com/package/ton-client-react-native-js)
 
 
 ## Community links:
